@@ -1,7 +1,7 @@
 (async () => {
 'use strict';
 
-// â”€â”€â”€ License â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── License ──────────────────────────────────────────────────────
 const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbyJJZOEEo3mLdmIU7VLKqhrDmECwTSupCLLt0JAbwcXtbOIzxwyF9DMX8E_Boqas0Q3tA/exec';
 const KEY_LICENSE = 'cip_license_key';
 
@@ -19,7 +19,7 @@ function showLicensePopup() {
   overlay.style.cssText = `position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;z-index:99999999;backdrop-filter:blur(10px);font-family:sans-serif;`;
   overlay.innerHTML = `
     <div style="background:#1c1c2e;padding:32px;border-radius:18px;width:320px;color:#fff;border:1px solid #0faf59;text-align:center;">
-      <div style="font-size:32px;margin-bottom:10px;">ðŸ”</div>
+      <div style="font-size:32px;margin-bottom:10px;">🔐</div>
       <h3 style="color:#0faf59;margin:0 0 6px;">Dubai Live Trade</h3>
       <p style="color:#888;font-size:12px;margin:0 0 20px;">Enter your license key to continue</p>
       <input id="_lic_inp" type="text" placeholder="License Key"
@@ -41,7 +41,7 @@ function showLicensePopup() {
       localStorage.setItem(KEY_LICENSE, key);
       overlay.remove(); init();
     } else {
-      msg.textContent = 'âŒ Invalid key! Contact admin.';
+      msg.textContent = '❌ Invalid key! Contact admin.';
       btn.textContent = 'VERIFY KEY'; btn.style.background = '#0faf59'; btn.disabled = false;
       inp.style.borderColor = '#ff3e3e';
     }
@@ -49,7 +49,7 @@ function showLicensePopup() {
   inp.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
 }
 
-// â”€â”€â”€ Storage Keys â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Storage Keys ────────────────────────────────────────────────
 const KEY_LB          = 'leaderboard';
 const KEY_INIT        = 'initBalance';
 const KEY_POSITION    = 'lb_position';
@@ -60,7 +60,7 @@ const KEY_FS593       = 'fs593_value';
 const KEY_AUTO_PATTI  = 'auto_patti_on';
 const KEY_SESSION_PNL = 'session_pnl';
 
-// â”€â”€â”€ State â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── State ───────────────────────────────────────────────────────
 let initialBal    = Number(localStorage.getItem(KEY_INIT) || 0);
 let manualPnl     = localStorage.getItem(KEY_PNL) !== null ? Number(localStorage.getItem(KEY_PNL)) : null;
 let pnlMode       = localStorage.getItem(KEY_PNL_MODE) || 'auto';
@@ -74,27 +74,27 @@ function saveSessionPnl() {
   sessionStorage.setItem(KEY_SESSION_PNL, sessionPnl);
 }
 
-// â”€â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Helpers ─────────────────────────────────────────────────────
 const $       = (s, c = document) => c.querySelector(s);
 const $$      = (s, c = document) => Array.from(c.querySelectorAll(s));
 const safeNum = v => parseFloat((v || '0').toString().replace(/[^0-9.-]+/g, '')) || 0;
 const fmtAmt  = v => '$' + Number(v).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-// â”€â”€â”€ Trade Result Detection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Trade Result Detection ───────────────────────────────────────
 // Notification element: div.LYJYG
-// Profit result:  div.GIbOO._4CKq  â†’ "+282.67 $"
-// Loss result:    div.GIbOO.G4OWz  â†’ "0.00 $"
+// Profit result:  div.GIbOO._4CKq  → "+282.67 $"
+// Loss result:    div.GIbOO.G4OWz  → "0.00 $"
 // Logic:
-//   - Profit class ._4CKq â†’ amount = positive number from text
-//   - Loss class .G4OWz   â†’ amount = negative (we lost the trade investment)
+//   - Profit class ._4CKq → amount = positive number from text
+//   - Loss class .G4OWz   → amount = negative (we lost the trade investment)
 //     Loss amount = 0.00 in text but we track it differently:
-//     On loss, the balance dropped by trade amount â†’ we use balance diff for loss amount
-//     OR: loss = 0 payout means full investment lost â†’ track via balance change only for loss
+//     On loss, the balance dropped by trade amount → we use balance diff for loss amount
+//     OR: loss = 0 payout means full investment lost → track via balance change only for loss
 
 let _tradeObserver  = null;
 let _processedNodes = new WeakSet();  // duplicate prevent
 
-// Balance polling â€” sirf loss amount accurately calculate karne ke liye
+// Balance polling — sirf loss amount accurately calculate karne ke liye
 let _lastBalance     = null;
 let _balInterval     = null;
 let _pendingLossCalc = false;
@@ -134,7 +134,7 @@ function onTradeResult(notifEl) {
   const lossEl   = notifEl.querySelector('.GIbOO.G4OWz');
 
   if (profitEl) {
-    // WIN â€” text mein amount hai e.g. "+282.67 $"
+    // WIN — text mein amount hai e.g. "+282.67 $"
     const amount = safeNum(profitEl.textContent);
     if (amount > 0) {
       // Profit = payout - investment
@@ -142,7 +142,7 @@ function onTradeResult(notifEl) {
       // Hum net gain track karte hain: balance se dekhenge
       // Lekin yahan simple approach: balance change track karo profit ke liye bhi
       _lastBalance = getBalance();  // snapshot lo
-      // Thodi der baad balance check karo â€” net gain milega
+      // Thodi der baad balance check karo — net gain milega
       setTimeout(() => {
         const newBal = getBalance();
         if (newBal !== null && _lastBalance !== null) {
@@ -157,7 +157,7 @@ function onTradeResult(notifEl) {
       }, 1200);  // 1.2 sec baad balance settle ho jata hai
     }
   } else if (lossEl) {
-    // LOSS â€” "0.00 $" â€” payout zero, trade amount gaya
+    // LOSS — "0.00 $" — payout zero, trade amount gaya
     // Balance change se accurate loss calculate karo
     _lastBalance = getBalance();
     _pendingLossCalc = true;
@@ -184,7 +184,7 @@ function startTradeObserver() {
     for (const m of mutations) {
       for (const node of m.addedNodes) {
         if (node.nodeType !== 1) continue;
-        // Direct match â€” yeh notification element hai
+        // Direct match — yeh notification element hai
         if (node.classList && node.classList.contains('LYJYG')) {
           onTradeResult(node);
         }
@@ -196,7 +196,7 @@ function startTradeObserver() {
   _tradeObserver.observe(document.body, { childList: true, subtree: true });
 }
 
-// â”€â”€â”€ Banner Hide â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Banner Hide ─────────────────────────────────────────────────
 (function () {
   const s = document.createElement('style');
   s.textContent = `
@@ -211,14 +211,14 @@ function startTradeObserver() {
 })();
 
 function hideBonusBanner() {
-  // All known banner selectors â€” desktop + mobile
+  // All known banner selectors — desktop + mobile
   document.querySelectorAll('.r7UKG,.P86XK,.ylLrz,.lcyZD,.ryS8w,.rGMix,.s3s3P').forEach(el => {
     el.style.setProperty('display',    'none',   'important');
     el.style.setProperty('visibility', 'hidden', 'important');
     el.style.setProperty('height',     '0',      'important');
     el.style.setProperty('overflow',   'hidden', 'important');
   });
-  // Text-based scan â€” "50%" wala koi bhi element
+  // Text-based scan — "50%" wala koi bhi element
   document.querySelectorAll('*').forEach(el => {
     if (el.children.length < 8 &&
         el.offsetHeight > 0 && el.offsetHeight < 120 &&
@@ -231,7 +231,7 @@ function hideBonusBanner() {
 }
 
 function fixUrl() {
-  // URL change disabled â€” demo link as it is
+  // URL change disabled — demo link as it is
 }
 
 function updateFs593() {
@@ -241,7 +241,7 @@ function updateFs593() {
   });
 }
 
-// â”€â”€â”€ Progress Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Progress Bar ─────────────────────────────────────────────────
 function updateProgressBar(pct, isLoss) {
   const p     = Math.min(100, Math.max(0, pct));
   const color = isLoss ? '#ff432e' : '#0faf59';
@@ -261,13 +261,13 @@ function updateProgressBar(pct, isLoss) {
   });
 }
 
-// â”€â”€â”€ Current P&L â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Current P&L ─────────────────────────────────────────────────
 function getCurrentPnl() {
   if (pnlMode === 'manual' && manualPnl !== null) return manualPnl;
   return sessionPnl;
 }
 
-// â”€â”€â”€ Main UI Update â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Main UI Update ───────────────────────────────────────────────
 let _uiRunning = false;
 let _uiPending = false;
 
@@ -291,7 +291,7 @@ function _runUpdateUI() {
   const color  = isLoss ? '#ff432e' : '#0faf59';
   const shown  = fmtAmt(Math.abs(diff));
 
-  // â”€â”€ LB Money â”€â”€
+  // ── LB Money ──
   const seen1 = new WeakSet();
   document.querySelectorAll('.ord28.o8xRM, .ord28, .BwWCZ').forEach(el => {
     if (seen1.has(el)) return; seen1.add(el);
@@ -299,7 +299,7 @@ function _runUpdateUI() {
     el.style.color = color;
   });
 
-  // â”€â”€ LB Name/ID â”€â”€
+  // ── LB Name/ID ──
   const lbData = JSON.parse(localStorage.getItem(KEY_LB) || '{"name":"Live"}');
   const seen2  = new WeakSet();
   document.querySelectorAll('.d6ijp p, .xN5cX p').forEach(el => {
@@ -307,7 +307,7 @@ function _runUpdateUI() {
     if (el.textContent !== lbData.name) el.textContent = lbData.name;
   });
 
-  // â”€â”€ Demo balance â†’ Zt1hG â”€â”€
+  // ── Demo balance → Zt1hG ──
   let curBal = 0;
   // Popup khula ho to b.YnoT0 se lo
   document.querySelectorAll('b.YnoT0').forEach(b => {
@@ -320,11 +320,11 @@ function _runUpdateUI() {
   }
   if (curBal <= 0 && initialBal > 0) curBal = initialBal;
 
-  // _forcedBal globally store karo â€” observer use karega
+  // _forcedBal globally store karo — observer use karega
   if (curBal > 0) window._forcedBal = fmtAmt(curBal);
 
-  // â”€â”€ Level Icon â€” Auto (balance se real-time) â”€â”€
-  // Demo ya live â€” jo bhi balance .qKWSR mein hai, usi se level decide karo
+  // ── Level Icon — Auto (balance se real-time) ──
+  // Demo ya live — jo bhi balance .qKWSR mein hai, usi se level decide karo
   // Standard (Plane) : 0 - 4,999
   // Pro (Cup)        : 5,000 - 9,999
   // VIP (Diamond)    : 10,000+
@@ -333,7 +333,7 @@ function _runUpdateUI() {
   if (manualLevel) {
     level = manualLevel;
   } else {
-    // Sirf current balance se decide karo â€” demo ho ya live
+    // Sirf current balance se decide karo — demo ho ya live
     level = curBal >= 10000 ? 'vip' : (curBal >= 5000 ? 'pro' : 'standart');
   }
   const iconHref = `/profile/images/spritemap.svg#icon-profile-level-${level}`;
@@ -344,7 +344,7 @@ function _runUpdateUI() {
     }
   });
 
-  // â”€â”€ Demo â†’ Live account display fix â”€â”€
+  // ── Demo → Live account display fix ──
   // Demo select karo lekin live wala UI dikhao
   // Switcher dropdown mein jo "Live" option hai usko active (selected) dikhao
   // Demo balance ($10,000) ko chhupa ke live balance dikhao
@@ -356,40 +356,40 @@ function _runUpdateUI() {
     }
   });
 
-  // â”€â”€ Account text â€” screen size ke hisaab se â”€â”€
+  // ── Account text — screen size ke hisaab se ──
   // Laptop (>768px): "Live Account" | Mobile/Tab (<=768px): "Live"
-  // .p0Ijl / .Qx5RW = switcher popup â€” iske andar text mat badlo
+  // .p0Ijl / .Qx5RW = switcher popup — iske andar text mat badlo
   const isDesktop = window.innerWidth > 768;
   document.querySelectorAll('.v2KPX.lTzTl, .v2KPX').forEach(el => {
-    if (el.closest('.p0Ijl, .Qx5RW')) return; // switcher popup â€” haath mat lagao
+    if (el.closest('.p0Ijl, .Qx5RW')) return; // switcher popup — haath mat lagao
     if (/demo|live/i.test(el.textContent)) {
       el.textContent = isDesktop ? 'Live Account' : 'Live';
       el.style.setProperty('color', '#0faf59', 'important');
     }
   });
 
-  // â”€â”€ Trade history count â”€â”€
+  // ── Trade history count ──
   if (savedFs593) {
     document.querySelectorAll('.XWEvH').forEach(el => {
       if (el.textContent !== savedFs593) el.textContent = savedFs593;
     });
   }
 
-  // â”€â”€ Position display â”€â”€
+  // ── Position display ──
   if (savedPosition) updatePositionDisplay(savedPosition);
 
-  // â”€â”€ Progress bar â”€â”€
+  // ── Progress bar ──
   if (savedProgress !== null) updateProgressBar(savedProgress, isLoss);
 
-  // â”€â”€ Auto patti â”€â”€
+  // ── Auto patti ──
   if (autoPatti) applyStaticPatti(isLoss);
 
-  // â”€â”€ Old position header fallback â”€â”€
+  // ── Old position header fallback ──
   const profitEl = document.querySelector('.position__header-money.--green, .position__header-money.--red');
   if (profitEl) { profitEl.innerText = shown; profitEl.style.color = color; }
 }
 
-// â”€â”€â”€ Line Animation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Line Animation ───────────────────────────────────────────────
 let _laf = null, _llt = 0;
 function tickLine(ts) {
   if (ts - _llt >= 800) {
@@ -402,7 +402,7 @@ function tickLine(ts) {
 }
 function startLineAnimation() { if (!_laf) _laf = requestAnimationFrame(tickLine); }
 
-// â”€â”€â”€ Position Text â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Position Text ────────────────────────────────────────────────
 function updatePositionDisplay(v) {
   let updated = false;
 
@@ -417,7 +417,7 @@ function updatePositionDisplay(v) {
       }
     });
     if (!found) {
-      // Text node nahi mila â€” inject karo
+      // Text node nahi mila — inject karo
       w.appendChild(document.createTextNode(v));
       updated = true;
     }
@@ -433,7 +433,7 @@ function updatePositionDisplay(v) {
   }
 }
 
-// â”€â”€â”€ Zt1hG Force Observer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Zt1hG Force Observer ────────────────────────────────────────
 // Quotex har render pe Zt1hG mein $0.00 likh deta hai (Live balance = $0)
 // Yeh observer Quotex ke likhne ke foran baad hamaari value wapas likh deta hai
 function _attachZt1hGObserver() {
@@ -464,14 +464,14 @@ new MutationObserver(mutations => {
 // Abhi jo elements hain unpe bhi lagao
 _attachZt1hGObserver();
 
-// â”€â”€â”€ MutationObserver for UI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── MutationObserver for UI ──────────────────────────────────────
 let _uiT;
 new MutationObserver(() => {
   clearTimeout(_uiT);
   _uiT = setTimeout(updateUI, 120);
 }).observe(document.body, { childList: true, subtree: true, characterData: true });
 
-// â”€â”€â”€ Auto Patti â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Auto Patti ───────────────────────────────────────────────────
 function applyStaticPatti(isLoss) {
   const color = isLoss ? '#ff432e' : '#0faf59';
   document.querySelectorAll('.uQuVa,.KBHoM').forEach(el => {
@@ -490,14 +490,14 @@ function stopAutoPatti() {
   localStorage.setItem(KEY_AUTO_PATTI, 'false');
 }
 
-// â”€â”€â”€ Floating ðŸŽ¯ Button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Floating 🎯 Button ───────────────────────────────────────────
 let _hideT = null;
 function showFloatingBtn() {
   let btn = document.getElementById('_lb_float_btn');
   if (!btn) {
     btn = document.createElement('div');
     btn.id = '_lb_float_btn';
-    btn.textContent = 'ðŸŽ¯';
+    btn.textContent = '🎯';
     btn.style.cssText = `position:fixed;bottom:130px;right:16px;width:42px;height:42px;background:#1c1c2e;border:2px solid #0faf59;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;z-index:99999;box-shadow:0 2px 14px rgba(15,175,89,0.4);transition:opacity 0.4s ease;opacity:1;-webkit-tap-highlight-color:transparent;touch-action:manipulation;`;
     btn.addEventListener('click', openSettingsPopup);
     document.body.appendChild(btn);
@@ -513,7 +513,7 @@ function showFloatingBtn() {
 }
 window.addEventListener('_ext_showBtn', showFloatingBtn);
 
-// â”€â”€â”€ Settings Popup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Settings Popup ───────────────────────────────────────────────
 function openSettingsPopup() {
   if (document.getElementById('_pos_popup')) return;
 
@@ -534,17 +534,17 @@ function openSettingsPopup() {
     <div style="background:#1c1c2e;padding:14px 16px;border-radius:14px;width:310px;max-width:95vw;color:#fff;border:1px solid #0faf59;font-family:sans-serif;margin:10px auto;">
 
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="color:#0faf59;font-size:13px;font-weight:bold;">âš™ï¸ Leaderboard Settings</span>
-        <span id="_pos_close" style="cursor:pointer;font-size:18px;color:#aaa;padding:2px 7px;border-radius:4px;background:#333;">âœ•</span>
+        <span style="color:#0faf59;font-size:13px;font-weight:bold;">⚙️ Leaderboard Settings</span>
+        <span id="_pos_close" style="cursor:pointer;font-size:18px;color:#aaa;padding:2px 7px;border-radius:4px;background:#333;">✕</span>
       </div>
 
       <!-- Session P&L -->
       <div style="background:#0d0d1a;border:1px solid ${sessColor}55;border-radius:8px;padding:8px 12px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:11px;color:#888;">ðŸ“ˆ Session P&L (auto)</span>
+        <span style="font-size:11px;color:#888;">📈 Session P&L (auto)</span>
         <span style="font-size:15px;font-weight:bold;color:${sessColor}">${sessIsLoss ? '-' : '+'} ${fmtAmt(Math.abs(sessionPnl))}</span>
       </div>
       <button id="_btn_reset_session" style="width:100%;padding:6px;background:transparent;border:1px solid #555;color:#888;font-size:11px;cursor:pointer;border-radius:6px;margin-bottom:10px;">
-        ðŸ”„ Reset Session P&L to $0.00
+        🔄 Reset Session P&L to $0.00
       </button>
 
       <!-- Name + Position -->
@@ -572,12 +572,12 @@ function openSettingsPopup() {
       </div>
 
       <!-- Level / Badge selector -->
-      <label style="font-size:10px;color:#888;display:block;margin-bottom:4px;">ðŸ… Account Badge</label>
+      <label style="font-size:10px;color:#888;display:block;margin-bottom:4px;">🏅 Account Badge</label>
       <div style="display:flex;gap:5px;margin-bottom:10px;">
-        <button id="_lvl_auto" style="flex:1;padding:6px 4px;border-radius:6px;font-size:11px;cursor:pointer;border:2px solid #444;background:transparent;color:#fff;pointer-events:auto;">âš¡ Auto</button>
-        <button id="_lvl_std"  style="flex:1;padding:6px 4px;border-radius:6px;font-size:11px;cursor:pointer;border:2px solid #444;background:transparent;color:#fff;pointer-events:auto;">âœˆï¸ Plane</button>
-        <button id="_lvl_pro"  style="flex:1;padding:6px 4px;border-radius:6px;font-size:11px;cursor:pointer;border:2px solid #444;background:transparent;color:#fff;pointer-events:auto;">ðŸ† Cup</button>
-        <button id="_lvl_vip"  style="flex:1;padding:6px 4px;border-radius:6px;font-size:11px;cursor:pointer;border:2px solid #444;background:transparent;color:#fff;pointer-events:auto;">ðŸ’Ž Diamond</button>
+        <button id="_lvl_auto" style="flex:1;padding:6px 4px;border-radius:6px;font-size:11px;cursor:pointer;border:2px solid #444;background:transparent;color:#fff;pointer-events:auto;">⚡ Auto</button>
+        <button id="_lvl_std"  style="flex:1;padding:6px 4px;border-radius:6px;font-size:11px;cursor:pointer;border:2px solid #444;background:transparent;color:#fff;pointer-events:auto;">✈️ Plane</button>
+        <button id="_lvl_pro"  style="flex:1;padding:6px 4px;border-radius:6px;font-size:11px;cursor:pointer;border:2px solid #444;background:transparent;color:#fff;pointer-events:auto;">🏆 Cup</button>
+        <button id="_lvl_vip"  style="flex:1;padding:6px 4px;border-radius:6px;font-size:11px;cursor:pointer;border:2px solid #444;background:transparent;color:#fff;pointer-events:auto;">💎 Diamond</button>
       </div>
 
       <!-- P/L Mode -->
@@ -587,13 +587,13 @@ function openSettingsPopup() {
           style="flex:1;padding:7px;border-radius:6px;font-size:11px;font-weight:bold;cursor:pointer;
                  border:2px solid ${!isManual ? '#0faf59' : '#444'};
                  background:${!isManual ? '#0faf59' : 'transparent'};color:#fff;">
-          âš¡ Auto (Trades)
+          ⚡ Auto (Trades)
         </button>
         <button id="_btn_mode_manual"
           style="flex:1;padding:7px;border-radius:6px;font-size:11px;font-weight:bold;cursor:pointer;
                  border:2px solid ${isManual ? '#0faf59' : '#444'};
                  background:${isManual ? '#0faf59' : 'transparent'};color:#fff;">
-          âœï¸ Manual
+          ✏️ Manual
         </button>
       </div>
 
@@ -601,22 +601,22 @@ function openSettingsPopup() {
       <div id="_manual_section" style="display:${isManual ? 'block' : 'none'};margin-bottom:8px;padding:8px;background:#0d0d1a;border-radius:8px;border:1px solid #333;">
         <label style="font-size:10px;color:#888;display:block;margin-bottom:4px;">Amount</label>
         <div style="display:flex;gap:6px;margin-bottom:6px;">
-          <button id="_btn_profit" style="flex:1;padding:7px;border:2px solid ${!isLoss ? '#0faf59' : '#444'};background:${!isLoss ? '#0faf59' : 'transparent'};color:#fff;border-radius:6px;cursor:pointer;font-size:12px;font-weight:bold;">âœ… Profit</button>
-          <button id="_btn_loss"   style="flex:1;padding:7px;border:2px solid ${isLoss ? '#ff432e' : '#444'};background:${isLoss ? '#ff432e' : 'transparent'};color:#fff;border-radius:6px;cursor:pointer;font-size:12px;font-weight:bold;">âŒ Loss</button>
+          <button id="_btn_profit" style="flex:1;padding:7px;border:2px solid ${!isLoss ? '#0faf59' : '#444'};background:${!isLoss ? '#0faf59' : 'transparent'};color:#fff;border-radius:6px;cursor:pointer;font-size:12px;font-weight:bold;">✅ Profit</button>
+          <button id="_btn_loss"   style="flex:1;padding:7px;border:2px solid ${isLoss ? '#ff432e' : '#444'};background:${isLoss ? '#ff432e' : 'transparent'};color:#fff;border-radius:6px;cursor:pointer;font-size:12px;font-weight:bold;">❌ Loss</button>
         </div>
         <div style="display:flex;gap:6px;align-items:center;">
           <input id="_inp_pnl" type="number" min="0" value="${curPnl}" placeholder="e.g. 250"
             style="flex:1;padding:7px 8px;background:#25253d;border:1px solid ${isLoss ? '#ff432e' : '#0faf59'};color:#fff;border-radius:6px;box-sizing:border-box;font-size:12px;outline:none;">
           <div id="_pnl_preview" style="min-width:70px;text-align:center;font-size:13px;font-weight:bold;padding:7px 4px;background:#25253d;border-radius:6px;color:${isLoss ? '#ff432e' : '#0faf59'}">
-            ${curPnl !== '' ? fmtAmt(Number(curPnl)) : 'â€”'}
+            ${curPnl !== '' ? fmtAmt(Number(curPnl)) : '—'}
           </div>
         </div>
       </div>
 
       <!-- Auto info -->
       <div id="_auto_section" style="display:${!isManual ? 'flex' : 'none'};align-items:flex-start;gap:8px;margin-bottom:8px;padding:8px 10px;background:#0a2010;border:1px solid #0faf5944;border-radius:8px;">
-        <span style="font-size:16px;margin-top:1px;">âš¡</span>
-        <span style="font-size:11px;color:#0faf59;line-height:1.5;">Har trade complete hone par notification se amount auto detect hoga â€” zero se start</span>
+        <span style="font-size:16px;margin-top:1px;">⚡</span>
+        <span style="font-size:11px;color:#0faf59;line-height:1.5;">Har trade complete hone par notification se amount auto detect hoga — zero se start</span>
       </div>
 
       <!-- Progress Bar -->
@@ -631,14 +631,14 @@ function openSettingsPopup() {
 
       <!-- Auto Patti -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:7px 10px;background:#25253d;border-radius:7px;">
-        <span style="font-size:11px;color:#ccc;">ðŸ“Š Auto Patti (profit=green / loss=red)</span>
+        <span style="font-size:11px;color:#ccc;">📊 Auto Patti (profit=green / loss=red)</span>
         <div id="_patti_bg" style="width:36px;height:20px;border-radius:20px;background:${autoPatti ? '#0faf59' : '#444'};position:relative;cursor:pointer;transition:background .3s;flex-shrink:0;">
           <div id="_patti_dot" style="width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:3px;left:${autoPatti ? '19px' : '3px'};transition:left .3s;"></div>
         </div>
       </div>
 
       <button id="_btn_apply" style="width:100%;padding:10px;background:#0faf59;border:none;color:#fff;font-weight:bold;font-size:13px;cursor:pointer;border-radius:8px;">
-        âœ… Apply & Save
+        ✅ Apply & Save
       </button>
     </div>`;
 
@@ -667,7 +667,7 @@ function openSettingsPopup() {
   btnAuto.onclick   = () => setMode('auto');
   btnManual.onclick = () => setMode('manual');
 
-  // â”€â”€ Level / Badge buttons â”€â”€
+  // ── Level / Badge buttons ──
   const KEY_LEVEL   = 'manual_level';
   let selectedLevel = localStorage.getItem(KEY_LEVEL) || 'auto';
 
@@ -775,7 +775,7 @@ function openSettingsPopup() {
   };
 }
 
-// â”€â”€â”€ Deposit button intercept â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Deposit button intercept ─────────────────────────────────────
 function openInitPopup() {
   if (document.getElementById('live-settings-popup')) return;
   const ub    = safeNum(document.querySelector('.qKWSR, .pVBHU')?.textContent) || 0;
@@ -807,7 +807,7 @@ document.addEventListener('click', e => {
   }
 }, true);
 
-// â”€â”€â”€ Init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Init ─────────────────────────────────────────────────────────
 function init() {
   hideBonusBanner();
   startLineAnimation();
@@ -824,7 +824,7 @@ function init() {
   }, 1200);
 }
 
-// â”€â”€â”€ License Check â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── License Check ────────────────────────────────────────────────
 (async () => {
   const key = localStorage.getItem(KEY_LICENSE);
   if (!key) { showLicensePopup(); return; }
